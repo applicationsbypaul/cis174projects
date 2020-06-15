@@ -4,6 +4,7 @@ namespace cis174projects.Models
 {
     public class Movie
     {
+        //Test git repo
         //EF Core will configure the database to generate this value
         public int MovieId { get; set; }
 
