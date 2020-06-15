@@ -23,6 +23,8 @@ namespace cis174projects
             services.AddControllersWithViews();
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("MovieContext")));
+            services.AddDbContext<MovieContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("ContactContext")));
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
