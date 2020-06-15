@@ -21,10 +21,12 @@ namespace cis174projects
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<MovieContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("MovieContext")));
-            services.AddDbContext<ContactContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("ContactContext")));
+            services.AddDbContext<MovieContext>(options => options.UseSqlServer(@"Server=tcp:cis174pford.database.windows.net,1433;
+                        Initial Catalog=CIS174;Persist Security Info=False;User ID=cis174;Password=Gemini99$;MultipleActiveResultSets=False;Encrypt=True;
+                        TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddDbContext<ContactContext>(options => options.UseSqlServer(@"Server=tcp:cis174pford.database.windows.net,1433;
+                        Initial Catalog=CIS174;Persist Security Info=False;User ID=cis174;Password=Gemini99$;MultipleActiveResultSets=False;Encrypt=True;
+                        TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
