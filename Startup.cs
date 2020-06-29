@@ -59,6 +59,10 @@ namespace cis174projects
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}/{slug?}");
+
+                endpoints.MapControllerRoute(
+                    name: "student",
+                    pattern: "{controller=Home}/{action=Index}/{id?}/");
             });
         }
     }

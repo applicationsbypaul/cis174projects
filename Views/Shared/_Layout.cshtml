@@ -24,14 +24,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="MovieHome" asp-action="Index">Movie List</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ContactHome" asp-action="Index">Contact-Assignment</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PersonHome" asp-action="Index">First Responsive WebApp</a>
+                        <li class="dropdown show">
+                            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
+                                Assignments
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="MovieHome" asp-action="Index">Movie List</a></li>
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="ContactHome" asp-action="Index">Contact-Assignment</a></li>
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="PersonHome" asp-action="Index">First Responsive WebApp</a></li>
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="StudentHome" asp-action="Index">Assignment 6.1</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
