@@ -27,6 +27,9 @@ namespace cis174projects
             services.AddDbContext<ContactContext>(options => options.UseSqlServer(@"Server=tcp:cis174pford.database.windows.net,1433;
                         Initial Catalog=CIS174;Persist Security Info=False;User ID=cis174;Password=Gemini99$;MultipleActiveResultSets=False;Encrypt=True;
                         TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddDbContext<CountryContext>(options => options.UseSqlServer(@"Server=tcp:cis174pford.database.windows.net,1433;
+                        Initial Catalog=CIS174;Persist Security Info=False;User ID=cis174;Password=Gemini99$;MultipleActiveResultSets=False;Encrypt=True;
+                        TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
@@ -57,12 +60,17 @@ namespace cis174projects
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "custom",
+                    pattern: "{controller}/{action}/game/{activeGame}/sport/{activeSport}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}/{slug?}");
 
                 endpoints.MapControllerRoute(
                     name: "student",
                     pattern: "{controller=Home}/{action=Index}/{id?}/");
+
             });
         }
     }
