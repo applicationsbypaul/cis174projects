@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace cis174projects
 {
@@ -20,7 +21,16 @@ namespace cis174projects
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddMemoryCache();
+            services.AddSession(options =>
+            {
+                //change idle timeout to 5 minutes - default is 20 minutes
+                options.IdleTimeout = TimeSpan.FromSeconds(60 * 5);
+                options.Cookie.HttpOnly = false;
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddDbContext<MovieContext>(options => options.UseSqlServer(@"Server=tcp:cis174pford.database.windows.net,1433;
                         Initial Catalog=CIS174;Persist Security Info=False;User ID=cis174;Password=Gemini99$;MultipleActiveResultSets=False;Encrypt=True;
                         TrustServerCertificate=False;Connection Timeout=30;"));
@@ -56,6 +66,8 @@ namespace cis174projects
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

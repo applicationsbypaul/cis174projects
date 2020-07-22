@@ -22,6 +22,10 @@ namespace cis174projects.Controllers
 
         public ViewResult Index(string activeGame = "all", string activeSport = "all")
         {
+            var session = new CountrySession(HttpContext.Session);
+            session.SetActiveGame(activeGame);
+            session.SetActiveSport(activeSport);
+
             var model = new CountryListViewModel
             {
                 ActiveGame = activeGame,
@@ -50,16 +54,41 @@ namespace cis174projects.Controllers
         [HttpGet]
         public ViewResult Details(string id)
         {
+            var session = new CountrySession(HttpContext.Session);
             var model = new CountryViewModel
             {
                 Country = context.Countries
                 .Include(t => t.Game)
                 .Include(t => t.Sport)
                 .FirstOrDefault(t => t.CountryID == id),
-                ActiveGame = TempData.Peek("ActiveGame").ToString(),
-                ActiveSport = TempData.Peek("ActiveSport").ToString()
+                ActiveGame = session.GetActiveGame(),
+                ActiveSport = session.GetActiveSport()
             };
             return View(model);
+        }
+
+        [HttpPost]
+        public RedirectToActionResult Add (CountryViewModel model)
+        {
+            model.Country = context.Countries
+                .Include(t => t.Game)
+                .Include(t => t.Sport)
+                .Where(t => t.CountryID == model.Country.CountryID)
+                .FirstOrDefault();
+
+            var session = new CountrySession(HttpContext.Session);
+            var countries = session.GetMyCountries();
+            countries.Add(model.Country);
+            session.SetMyCountries(countries);
+
+            TempData["message"] = $"{model.Country.Name} added to your favorites";
+
+            return RedirectToAction("Index",
+                new
+                {
+                    ActiveGame = session.GetActiveGame(),
+                    ActiveSport = session.GetActiveSport()
+                });
         }
     }
 }
