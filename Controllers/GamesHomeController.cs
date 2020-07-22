@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using cis174projects.Models;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.IdentityModel.Tokens;
 
 namespace cis174projects.Controllers
 {
@@ -19,23 +22,13 @@ namespace cis174projects.Controllers
 
         public ViewResult Index(string activeGame = "all", string activeSport = "all")
         {
-            //store selected selected games and sports ID's in a view bag
-            ViewBag.ActiveGame = activeGame;
-            ViewBag.ActiveSport = activeSport;
-
-            //get list of games and sports from databse
-            List<Game> games = context.Games.ToList();
-            List<Sport> sports = context.Sports.ToList();
-
-            //insert default "All" value at front of each list
-            games.Insert(0, new Game { GameID = "all", Name = "All" });
-            sports.Insert(0, new Sport { SportID = "all", SportName = "All" });
-
-            //store lists in viewbag
-            ViewBag.Games = games;
-            ViewBag.sports = sports;
-
-            //get coutnries - filter by game and category
+            var model = new CountryListViewModel
+            {
+                ActiveGame = activeGame,
+                ActiveSport = activeSport,
+                Games = context.Games.ToList(),
+                Sports = context.Sports.ToList()
+            };
             IQueryable<Country> query = context.Countries;
             if (activeGame != "all")
                 query = query.Where(
@@ -43,10 +36,30 @@ namespace cis174projects.Controllers
             if (activeSport != "all")
                 query = query.Where(
                     t => t.Sport.SportID.ToLower() == activeSport.ToLower());
-
-            //pass teams to view as model
-            var teams = query.ToList();
-            return View(teams);
+            model.Countries = query.ToList();
+            return View(model);
+        }
+        [HttpPost]
+        public RedirectToActionResult Details (CountryViewModel model)
+        {
+            //Utility.LogCountryClick(model.Country.CountryID);
+            TempData["ActiveGame"] = model.ActiveGame;
+            TempData["ActiveSport"] = model.ActiveSport;
+            return RedirectToAction("Details", new { ID = model.Country.CountryID });
+        }
+        [HttpGet]
+        public ViewResult Details(string id)
+        {
+            var model = new CountryViewModel
+            {
+                Country = context.Countries
+                .Include(t => t.Game)
+                .Include(t => t.Sport)
+                .FirstOrDefault(t => t.CountryID == id),
+                ActiveGame = TempData.Peek("ActiveGame").ToString(),
+                ActiveSport = TempData.Peek("ActiveSport").ToString()
+            };
+            return View(model);
         }
     }
 }
