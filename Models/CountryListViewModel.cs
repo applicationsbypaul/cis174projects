@@ -8,9 +8,10 @@ namespace cis174projects.Models
 {
     public class CountryListViewModel : CountryViewModel
     {
+        public Country Country { get; set; }
         public List<Country> Countries { get; set; }
-        public string ActiveGame { get; set; }
-        public string ActiveSport { get; set; }
+        public string ActiveGame { get; set; } = "all";
+        public string ActiveSport { get; set; } = "all";
 
         //make next two properties standard properties so the setter
         //can make the first item in each list "All"

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cis174projects.Migrations.Country;
 using cis174projects.Models;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
@@ -20,31 +21,25 @@ namespace cis174projects.Controllers
             context = ctx;
         }
 
-        public ViewResult Index(string activeGame = "all", string activeSport = "all")
+        public IActionResult Index(CountryListViewModel model)
         {
-            var session = new CountrySession(HttpContext.Session);
-            session.SetActiveGame(activeGame);
-            session.SetActiveSport(activeSport);
+            model.Games = context.Games.ToList();
+            model.Sports = context.Sports.ToList();
 
-            var model = new CountryListViewModel
-            {
-                ActiveGame = activeGame,
-                ActiveSport = activeSport,
-                Games = context.Games.ToList(),
-                Sports = context.Sports.ToList()
-            };
+
+
             IQueryable<Country> query = context.Countries;
-            if (activeGame != "all")
+            if (model.ActiveGame != "all")
                 query = query.Where(
-                    t => t.Game.GameID.ToLower() == activeGame.ToLower());
-            if (activeSport != "all")
+                    t => t.Game.GameID.ToLower() == model.ActiveGame.ToLower());
+            if (model.ActiveSport != "all")
                 query = query.Where(
-                    t => t.Sport.SportID.ToLower() == activeSport.ToLower());
+                    t => t.Sport.SportID.ToLower() == model.ActiveSport.ToLower());
             model.Countries = query.ToList();
             return View(model);
         }
         [HttpPost]
-        public RedirectToActionResult Details (CountryViewModel model)
+        public RedirectToActionResult Details(CountryViewModel model)
         {
             //Utility.LogCountryClick(model.Country.CountryID);
             TempData["ActiveGame"] = model.ActiveGame;
@@ -68,7 +63,7 @@ namespace cis174projects.Controllers
         }
 
         [HttpPost]
-        public RedirectToActionResult Add (CountryViewModel model)
+        public RedirectToActionResult Add(CountryViewModel model)
         {
             model.Country = context.Countries
                 .Include(t => t.Game)

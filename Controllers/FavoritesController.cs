@@ -37,5 +37,10 @@ namespace cis174projects.Controllers
                     ActiveSport = session.GetActiveSport()
                 });
         }
+
+        public RedirectToActionResult Details()
+        {
+            return RedirectToAction("Index", "Favorites");
+        }
     }
 }
