@@ -18,12 +18,18 @@ namespace cis174projects.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Status>().HasData(
-                new Status { StatusId = "todo", Name = "To Do" },
-                new Status { StatusId = "inprogress", Name = "In Progress" },
-                new Status { StatusId = "qa", Name = "Quality Assurance" },
-                new Status { StatusId = "done", Name = "Done" }
-                );
+            // Ticket: set composit primary key
+            modelBuilder.Entity<Ticket>()
+                .HasKey(t => new { t.Id });
+
+            //Ticket: set foreign keys
+            modelBuilder.Entity<Ticket>().HasOne(t => t.Status)
+                .WithMany(s => s.Tickets)
+                .HasForeignKey(t => t.StatusId);
+
+            // seed initial data
+            modelBuilder.ApplyConfiguration(new SeedTickets());
+            modelBuilder.ApplyConfiguration(new SeedStatuses());
         }
     }
 }

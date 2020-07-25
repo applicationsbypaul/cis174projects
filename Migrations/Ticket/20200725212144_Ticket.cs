@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace cis174projects.Migrations.Ticket
 {
-    public partial class ticket : Migration
+    public partial class Ticket : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,13 +22,14 @@ namespace cis174projects.Migrations.Ticket
                 name: "TicketsP",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false).Annotation(
-                        "SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable:false),
-                    Description = table.Column<string>(nullable: false),
-                    SprintNumber = table.Column<string>(nullable:false),
-                    PointValue = table.Column<string>(nullable:false),
-                    StatusId = table.Column<string>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(maxLength: 200, nullable: false),
+                    SprintNumber = table.Column<string>(nullable: false),
+                    PointValue = table.Column<string>(nullable: false),
+                    StatusId = table.Column<string>(nullable: false),
+                    TicketId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,6 +40,12 @@ namespace cis174projects.Migrations.Ticket
                         principalTable: "StatusesP",
                         principalColumn: "StatusId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TicketsP_TicketsP_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "TicketsP",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -54,10 +59,20 @@ namespace cis174projects.Migrations.Ticket
                     { "done", "Done" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "TicketsP",
+                columns: new[] { "Id", "Description", "Name", "PointValue", "SprintNumber", "StatusId", "TicketId" },
+                values: new object[] { 1, "Testing out seeding valuse", "Seeding ticket with database", "1", "100", "todo", null });
+
             migrationBuilder.CreateIndex(
                 name: "IX_TicketsP_StatusId",
                 table: "TicketsP",
                 column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketsP_TicketId",
+                table: "TicketsP",
+                column: "TicketId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

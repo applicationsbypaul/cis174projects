@@ -14,7 +14,7 @@ namespace cis174projects.Models
         [Required(ErrorMessage = "Please enter the name of the ticket")]
 
         // Allow up to 50 characters.
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$",
+        [RegularExpression(@"^[a-zA-Z''-'0-9\s]{1,40}$",
          ErrorMessage = "Special Characters are not allowed.")]
         public string Name { get; set; }
 
@@ -31,5 +31,7 @@ namespace cis174projects.Models
         [Required(ErrorMessage = "Please select a Status.")]
         public string StatusId { get; set; }
         public Status Status { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }
