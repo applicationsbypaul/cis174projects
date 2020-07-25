@@ -1,0 +1,44 @@
+﻿@model Ticket
+@{ 
+   var pointvaluefilters = Filters.PointValueFilterValues;
+    var sprintnumberfilters = Filters.SprintNumberFilterValues;
+}
+<h2>New Ticket</h2>
+
+@*<div asp-validation-summary="All" class="text-danger"></div>*@
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Name:</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Description:</label>
+        <input asp-for="Description" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="SprintNumber">SprintNumber:</label>
+        <select asp-for="SprintNumber" class="form-control"
+                asp-items="@(new SelectList(sprintnumberfilters, "Key", "Value"))">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="PointValue">Point Value</label>
+        <select asp-for="PointValue" class="form-control"
+                asp-items="@(new SelectList(pointvaluefilters, "Key","Value"))">
+            <option value=""></option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StatusId">Status:</label>
+        <select asp-for="StatusId" class="form-control"
+                asp-items="@(new SelectList(ViewBag.Statuses,"StatusId","Name"))">
+            <option value=""></option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

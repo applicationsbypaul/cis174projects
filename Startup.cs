@@ -40,6 +40,9 @@ namespace cis174projects
             services.AddDbContext<CountryContext>(options => options.UseSqlServer(@"Server=tcp:cis174pford.database.windows.net,1433;
                         Initial Catalog=CIS174;Persist Security Info=False;User ID=cis174;Password=Gemini99$;MultipleActiveResultSets=False;Encrypt=True;
                         TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddDbContext<TicketContext>(options => options.UseSqlServer(@"Server=tcp:cis174pford.database.windows.net,1433;
+                        Initial Catalog=CIS174;Persist Security Info=False;User ID=cis174;Password=Gemini99$;MultipleActiveResultSets=False;Encrypt=True;
+                        TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
