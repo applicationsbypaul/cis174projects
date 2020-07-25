@@ -12,9 +12,14 @@ namespace cis174projects.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please enter the name of the ticket")]
+
+        // Allow up to 50 characters.
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$",
+         ErrorMessage = "Characters are not allowed.")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Please enter a description.")]
+        [StringLength(200)]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Please enter a Sprint Number.")]
