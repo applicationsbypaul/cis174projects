@@ -15,7 +15,7 @@ namespace cis174projects.Models
 
         // Allow up to 50 characters.
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$",
-         ErrorMessage = "Characters are not allowed.")]
+         ErrorMessage = "Special Characters are not allowed.")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Please enter a description.")]

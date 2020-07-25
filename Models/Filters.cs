@@ -34,10 +34,6 @@ namespace cis174projects.Models
                 {"4", "Emergency" }
             };
 
-        public string isLow => PointValue.ToLower();
-        public string isMedium => PointValue.ToLower();
-        public string isHigh => PointValue.ToLower();
-        public string isEmergency => PointValue.ToLower();
 
         public static Dictionary<string, string> SprintNumberFilterValues =>
             new Dictionary<string, string>
@@ -47,10 +43,5 @@ namespace cis174projects.Models
                 {"300", "Testing" },
                 {"400", "Demo"}
             };
-
-        public bool is100 => SprintNumber.ToLower() == "story";
-        public bool is200 => SprintNumber.ToLower() == "planning";
-        public bool is300 => SprintNumber.ToLower() == "testing";
-        public bool is400 => SprintNumber.ToLower() == "demo";
        }
 }
